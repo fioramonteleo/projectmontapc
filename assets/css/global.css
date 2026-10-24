@@ -1,0 +1,528 @@
+/**
+ * Estilos Globais e Identidade Visual — Konoha Hardware
+ * 
+ * Identidade visual inspirada na atmosfera e paleta de cores de Naruto
+ * combinada à organização funcional de lojas de hardware (KaBuM! / Pichau / Terabyte):
+ * - Laranja (#FF6B00): Cor de destaque principal em botões, seleções e indicadores.
+ * - Preto e Grafite (#141619 / #1F2328): Cabeçalho, textos e contraste.
+ * - Branco (#FFFFFF): Fundo principal de leitura limpa.
+ * - Cinza-claro (#F4F5F7 / #E2E8F0): Cartões secundários e divisórias.
+ * - Azul-escuro (#1B365D): Cor complementar usada moderadamente em selos técnicos.
+ */
+
+:root {
+  --cor-laranja: #ff6b00;
+  --cor-laranja-hover: #e05a00;
+  --cor-laranja-claro: #fff3eb;
+  --cor-laranja-borda: #ffd0b0;
+
+  --cor-grafite-escuro: #141619;
+  --cor-grafite-cabecalho: #1b1e23;
+  --cor-texto-principal: #1f2328;
+  --cor-texto-secundario: #4b5563;
+  --cor-texto-suave: #6b7280;
+
+  --cor-branco: #ffffff;
+  --cor-fundo-pagina: #f7f8fa;
+  --cor-cinza-claro: #f1f3f5;
+  --cor-borda: #e2e8f0;
+  --cor-borda-forte: #cbd5e1;
+
+  --cor-azul-escuro: #1b365d;
+  --cor-azul-claro: #eef3f9;
+
+  --cor-sucesso: #15803d;
+  --cor-sucesso-fundo: #f0fdf4;
+  --cor-sucesso-borda: #bbf7d0;
+
+  --cor-alerta: #b45309;
+  --cor-alerta-fundo: #fffbeb;
+  --cor-alerta-borda: #fde68a;
+
+  --cor-erro: #b91c1c;
+  --cor-erro-fundo: #fef2f2;
+  --cor-erro-borda: #fecaca;
+
+  --raio-cartao: 8px;
+  --raio-botao: 6px;
+  --sombra-cartao: 0 1px 3px rgba(20, 22, 25, 0.06), 0 1px 2px rgba(20, 22, 25, 0.04);
+  --sombra-cartao-hover: 0 4px 12px rgba(20, 22, 25, 0.09);
+  --largura-maxima: 1260px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background-color: var(--cor-fundo-pagina);
+  color: var(--cor-texto-principal);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Padrão geométrico ninja discreto de baixíssima opacidade no fundo */
+  background-image: radial-gradient(rgba(255, 107, 0, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.container-limite {
+  width: 100%;
+  max-width: var(--largura-maxima);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ==========================================================================
+   CABEÇALHO E NAVEGAÇÃO PRINCIPAL (Inspiração Lojas de Hardware + Naruto)
+   ========================================================================== */
+
+.cabecalho-site {
+  background-color: var(--cor-grafite-escuro);
+  color: var(--cor-branco);
+  border-bottom: 3px solid var(--cor-laranja);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.cabecalho-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 0.85rem 0;
+  flex-wrap: wrap;
+}
+
+.marca-loja {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--cor-branco);
+  cursor: pointer;
+}
+
+.simbolo-marca-folha {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--cor-laranja);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.simbolo-marca-folha svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--cor-grafite-escuro);
+}
+
+.marca-textos {
+  display: flex;
+  flex-direction: column;
+}
+
+.marca-nome {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.marca-nome span {
+  color: var(--cor-laranja);
+}
+
+.marca-subtitulo {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Campo de pesquisa de componentes no cabeçalho */
+.barra-pesquisa-header {
+  flex: 1;
+  max-width: 440px;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  background-color: var(--cor-grafite-cabecalho);
+  border: 1px solid #374151;
+  border-radius: var(--raio-botao);
+  overflow: hidden;
+}
+
+.barra-pesquisa-header:focus-within {
+  border-color: var(--cor-laranja);
+}
+
+.input-pesquisa-global {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--cor-branco);
+  padding: 0.55rem 0.85rem;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.input-pesquisa-global::placeholder {
+  color: #9ca3af;
+}
+
+.btn-pesquisa-global {
+  background-color: var(--cor-laranja);
+  color: var(--cor-branco);
+  border: none;
+  padding: 0.55rem 0.95rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-pesquisa-global:hover {
+  background-color: var(--cor-laranja-hover);
+}
+
+/* Área de Login Google no Cabeçalho */
+.area-auth-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.btn-google-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--cor-branco);
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-botao);
+  padding: 0.48rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-google-login:hover {
+  background-color: var(--cor-cinza-claro);
+}
+
+.box-usuario-autenticado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: var(--cor-grafite-cabecalho);
+  border: 1px solid #374151;
+  padding: 0.38rem 0.75rem;
+  border-radius: var(--raio-botao);
+  font-size: 0.82rem;
+}
+
+.indicador-online-laranja {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--cor-laranja);
+}
+
+.email-usuario-logado {
+  color: var(--cor-branco);
+  font-weight: 600;
+  max-width: 210px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-encerrar-sessao {
+  background: transparent;
+  color: #fca5a5;
+  border: 1px solid rgba(252, 165, 165, 0.35);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.btn-encerrar-sessao:hover {
+  background-color: rgba(185, 28, 28, 0.25);
+}
+
+/* Barra de Navegação Principal */
+.barra-navegacao-principal {
+  background-color: var(--cor-grafite-cabecalho);
+  border-top: 1px solid #262a32;
+}
+
+.lista-menu-principal {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  padding: 0.35rem 0;
+}
+
+.link-aba-menu {
+  background: transparent;
+  color: #d1d5db;
+  border: none;
+  padding: 0.55rem 0.95rem;
+  border-radius: var(--raio-botao);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.link-aba-menu:hover {
+  color: var(--cor-branco);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.link-aba-menu.ativa {
+  background-color: var(--cor-laranja);
+  color: var(--cor-branco);
+}
+
+/* ==========================================================================
+   ELEMENTOS DECORATIVOS DISCRETOS (Símbolos Ninja / Pergaminho Baixa Opacidade)
+   ========================================================================== */
+
+.divisor-pergaminho {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  color: var(--cor-laranja);
+  opacity: 0.55;
+}
+
+.divisor-pergaminho::before,
+.divisor-pergaminho::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--cor-borda-forte);
+}
+
+.simbolo-selo-circular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--cor-laranja);
+  border-radius: 50%;
+  font-size: 0.65rem;
+}
+
+/* ==========================================================================
+   ESTRUTURA DE SEÇÕES E TIPOGRAFIA
+   ========================================================================== */
+
+.conteudo-principal {
+  flex: 1;
+  padding: 1.75rem 0 3rem;
+}
+
+.secao-aba[hidden] {
+  display: none !important;
+}
+
+.cabecalho-secao {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--cor-borda);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.etiqueta-secao-topo {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cor-laranja);
+  background-color: var(--cor-laranja-claro);
+  border: 1px solid var(--cor-laranja-borda);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.4rem;
+}
+
+.titulo-secao {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  letter-spacing: -0.02em;
+}
+
+.subtitulo-secao {
+  font-size: 0.95rem;
+  color: var(--cor-texto-secundario);
+  max-width: 720px;
+  margin-top: 0.25rem;
+}
+
+/* Botões Padrão */
+.btn-laranja-principal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--cor-laranja);
+  color: var(--cor-branco);
+  border: 1px solid var(--cor-laranja);
+  border-radius: var(--raio-botao);
+  padding: 0.68rem 1.25rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.btn-laranja-principal:hover:not(:disabled) {
+  background-color: var(--cor-laranja-hover);
+}
+
+.btn-laranja-principal:disabled {
+  background-color: #cbd5e1;
+  border-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.btn-secundario-simples {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: var(--cor-branco);
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-botao);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-secundario-simples:hover {
+  background-color: var(--cor-cinza-claro);
+  border-color: var(--cor-texto-principal);
+}
+
+.btn-azul-complementar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-branco);
+  border: 1px solid var(--cor-azul-escuro);
+  border-radius: var(--raio-botao);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-azul-complementar:hover {
+  background-color: #132847;
+}
+
+/* ==========================================================================
+   RODAPÉ SIMPLES
+   ========================================================================== */
+
+.rodape-site {
+  background-color: var(--cor-grafite-escuro);
+  color: #9ca3af;
+  border-top: 3px solid var(--cor-laranja);
+  padding: 1.75rem 0;
+  font-size: 0.85rem;
+  margin-top: auto;
+}
+
+.rodape-conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rodape-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rodape-links button {
+  background: none;
+  border: none;
+  color: #d1d5db;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.rodape-links button:hover {
+  color: var(--cor-laranja);
+}
+
+@media (max-width: 768px) {
+  .cabecalho-topo {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .barra-pesquisa-header {
+    max-width: 100%;
+  }
+
+  .area-auth-header {
+    justify-content: space-between;
+  }
+
+  .titulo-secao {
+    font-size: 1.35rem;
+  }
+}

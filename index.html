@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Konoha Hardware — Montador de PC, Configurações e Arquitetura da Computação</title>
+  <meta name="description" content="Loja e configurador de hardware: monte seu computador com verificação de compatibilidade, consulte PCs Gamer com visualizador 3D, PCs para Trabalho e aprenda Arquitetura da Computação." />
+
+  <!-- Fonte legível -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Estilos organizados por responsabilidade -->
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/componentes.css" />
+
+  <!-- SDK Oficial Google Identity Services (Autenticação OAuth 2.0) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Biblioteca Three.js (Utilizada EXCLUSIVAMENTE na aba PCs Gamer) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ========================================================================
+       CABEÇALHO E NAVEGAÇÃO CONSISTENTE
+       ======================================================================== -->
+  <header class="cabecalho-site">
+    <div class="container-limite">
+      <div class="cabecalho-topo">
+        <!-- Identidade Visual Própria (Inspiração discreta em Folha / Hardware) -->
+        <a href="#inicio" class="marca-loja" data-ir-aba="inicio" aria-label="Ir para o início da Konoha Hardware">
+          <div class="simbolo-marca-folha" aria-hidden="true">
+            <!-- Silhueta abstrata de folha combinada a espiral geométrica -->
+            <svg viewBox="0 0 24 24">
+              <path d="M19.5 4.5C14 4.5 9.2 6.8 6.8 10.6c-1.8 2.9-1.5 6.4.8 8.7 2.3 2.3 5.8 2.6 8.7.8 3.8-2.4 6.1-7.2 6.1-12.7 0-1.6-1.3-2.9-2.9-2.9zm-6.8 12.1c-1.7 0-3.1-1.4-3.1-3.1s1.4-3.1 3.1-3.1 3.1 1.4 3.1 3.1-1.4 3.1-3.1 3.1z"/>
+            </svg>
+          </div>
+          <div class="marca-textos">
+            <span class="marca-nome">KONOHA <span>HARDWARE</span></span>
+            <span class="marca-subtitulo">Configurador &amp; Tecnologia</span>
+          </div>
+        </a>
+
+        <!-- Campo de Pesquisa Funcional de Componentes -->
+        <form class="barra-pesquisa-header" id="form-pesquisa-global" role="search">
+          <input
+            type="search"
+            id="input-pesquisa-global"
+            class="input-pesquisa-global"
+            placeholder="Pesquisar peça (ex.: Ryzen, RTX 4060, DDR5, SSD 1TB)..."
+            aria-label="Pesquisar componentes de hardware"
+          />
+          <button type="submit" class="btn-pesquisa-global">Buscar</button>
+        </form>
+
+        <!-- Autenticação Google no Cabeçalho -->
+        <div class="area-auth-header">
+          <button type="button" class="btn-google-login" id="btn-entrar-google">
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+              <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+              <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+              <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
+            </svg>
+            <span>Entrar com Google</span>
+          </button>
+
+          <!-- Exibido quando o usuário está autenticado -->
+          <div class="box-usuario-autenticado" id="box-usuario-google" hidden>
+            <span class="indicador-online-laranja" aria-hidden="true"></span>
+            <span class="email-usuario-logado" id="texto-email-autenticado"></span>
+            <button type="button" class="btn-encerrar-sessao" id="btn-sair-google">Sair</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu de Navegação Principal -->
+    <nav class="barra-navegacao-principal" aria-label="Navegação Principal">
+      <div class="container-limite">
+        <ul class="lista-menu-principal">
+          <li><button type="button" class="link-aba-menu ativa" data-ir-aba="inicio" aria-current="page">Início</button></li>
+          <li><button type="button" class="link-aba-menu" data-ir-aba="montar">Montar seu PC</button></li>
+          <li><button type="button" class="link-aba-menu" data-ir-aba="gamer">PCs Gamer</button></li>
+          <li><button type="button" class="link-aba-menu" data-ir-aba="trabalho">PCs para Trabalho</button></li>
+          <li><button type="button" class="link-aba-menu" data-ir-aba="arquitetura">Arquitetura da Computação</button></li>
+          <li><button type="button" class="link-aba-menu" data-ir-aba="equipe">Sobre a Equipe</button></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========================================================================
+       CONTEÚDO PRINCIPAL
+       ======================================================================== -->
+  <main class="conteudo-principal">
+    <div class="container-limite">
+
+      <!-- ====================================================================
+           ABA 1: PÁGINA INICIAL (INÍCIO)
+           ==================================================================== -->
+      <section id="aba-inicio" class="secao-aba">
+        <div class="hero-apresentacao">
+          <div class="hero-conteudo">
+            <span class="etiqueta-secao-topo">Loja &amp; Configurador de Hardware</span>
+            <h1 class="hero-titulo">
+              Monte seu computador com peças compatíveis e descubra o <span>desempenho real</span>.
+            </h1>
+            <p class="hero-descricao">
+              Escolha componentes verificados passo a passo, consulte configurações prontas para jogos ou produtividade profissional e aprenda os conceitos essenciais de Arquitetura da Computação.
+            </p>
+            <div class="hero-acoes">
+              <button type="button" class="btn-laranja-principal" data-ir-aba="montar">
+                Começar a Montar um PC →
+              </button>
+              <button type="button" class="btn-secundario-simples" data-ir-aba="gamer">
+                Ver Configurações Gamer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Três Cartões Principais: Montar seu PC, PCs Gamer e PCs para Trabalho -->
+        <div class="grade-tres-cartoes">
+          <article class="cartao-atalho-principal">
+            <div>
+              <div class="cartao-atalho-icone" aria-hidden="true">01</div>
+              <h2 class="cartao-atalho-titulo">Montar seu PC</h2>
+              <p class="cartao-atalho-texto">
+                Selecione processador, placa-mãe, memória RAM, placa de vídeo, SSD, fonte, gabinete e cooler com validação imediata de compatibilidade e estimativa de desempenho final.
+              </p>
+            </div>
+            <button type="button" class="btn-laranja-principal" data-ir-aba="montar">
+              Abrir Montador de PC
+            </button>
+          </article>
+
+          <article class="cartao-atalho-principal">
+            <div>
+              <div class="cartao-atalho-icone" aria-hidden="true">02</div>
+              <h2 class="cartao-atalho-titulo">PCs Gamer</h2>
+              <p class="cartao-atalho-texto">
+                Conheça configurações organizadas nos níveis Entrada, Intermediário e Avançado, com estimativas de FPS e nosso visualizador 3D interativo de gabinete gamer.
+              </p>
+            </div>
+            <button type="button" class="btn-secundario-simples" data-ir-aba="gamer">
+              Explorar PCs Gamer
+            </button>
+          </article>
+
+          <article class="cartao-atalho-principal">
+            <div>
+              <div class="cartao-atalho-icone" aria-hidden="true">03</div>
+              <h2 class="cartao-atalho-titulo">PCs para Trabalho</h2>
+              <p class="cartao-atalho-texto">
+                Computadores pré-montados nos níveis Básico, Intermediário e Profissional, avaliados para estudos, programação, multitarefas e projetos técnicos no AutoCAD.
+              </p>
+            </div>
+            <button type="button" class="btn-secundario-simples" data-ir-aba="trabalho">
+              Consultar PCs de Trabalho
+            </button>
+          </article>
+        </div>
+
+        <!-- Linha Decorativa Inspirada em Pergaminho -->
+        <div class="divisor-pergaminho" aria-hidden="true">
+          <span class="simbolo-selo-circular">◆</span>
+        </div>
+
+        <!-- Destaque para Aprender Arquitetura da Computação -->
+        <div class="destaque-arquitetura-home">
+          <div class="destaque-arquitetura-info">
+            <span class="badge-azul-tecnico">Módulo Educativo Interativo</span>
+            <h2 class="cartao-atalho-titulo" style="margin-bottom: 0.35rem;">
+              Aprenda Arquitetura da Computação
+            </h2>
+            <p class="subtitulo-secao">
+              Estude ULA, Unidade de Controle, Hierarquia de Memória, Sistemas Binários, Registradores, Barramentos e Arquitetura de Von Neumann respondendo perguntas interativas com explicações técnicas.
+            </p>
+          </div>
+          <button type="button" class="btn-azul-complementar" data-ir-aba="arquitetura">
+            Acessar Cartões de Estudo →
+          </button>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 2: MONTAR SEU PC (CONFIGURADOR COM FOTOS REAIS + TELA DE DESEMPENHO)
+           ==================================================================== -->
+      <section id="aba-montar" class="secao-aba" hidden>
+        <div class="cabecalho-secao">
+          <div>
+            <span class="etiqueta-secao-topo">Configurador Passo a Passo</span>
+            <h2 class="titulo-secao">Montar seu PC</h2>
+            <p class="subtitulo-secao">
+              Escolha as 8 peças do seu computador. A compatibilidade física, elétrica e de soquete é verificada automaticamente durante a seleção.
+            </p>
+          </div>
+        </div>
+
+        <!-- Seleção de Finalidade da Montagem -->
+        <div class="barra-finalidade-montagem">
+          <div class="rotulo-finalidade">
+            Qual será a finalidade principal deste computador?
+            <span>Isso define os indicadores de desempenho (FPS em jogos ou adequação profissional/AutoCAD) na tela de resultado final.</span>
+          </div>
+          <div class="grupo-botoes-finalidade" role="group" aria-label="Finalidade do computador">
+            <button type="button" class="btn-finalidade-opcao ativa" data-set-finalidade="jogos">
+              Jogos (PC Gamer)
+            </button>
+            <button type="button" class="btn-finalidade-opcao" data-set-finalidade="trabalho">
+              Trabalho e Produtividade
+            </button>
+            <button type="button" class="btn-finalidade-opcao" data-set-finalidade="hibrido">
+              Uso Híbrido (Jogos + Trabalho)
+            </button>
+          </div>
+        </div>
+
+        <!-- Alerta de Feedback Rápido -->
+        <div id="alerta-feedback-montador" class="aviso-incompatibilidade-card" hidden role="alert"></div>
+
+        <!-- Etapa 1: Seleção das Peças -->
+        <div id="container-etapa-selecao-montador">
+          <div id="nav-categorias-montador" class="navegacao-categorias-pecas" role="tablist" aria-label="Categorias de componentes"></div>
+
+          <div class="layout-montador">
+            <!-- Coluna Catálogo de Peças -->
+            <div>
+              <div class="barra-controles-catalogo">
+                <div class="info-categoria-atual">
+                  <h3 id="titulo-categoria-atual">1. Processador</h3>
+                  <p id="descricao-categoria-atual">Selecione o processador para iniciar sua configuração.</p>
+                </div>
+                <div class="controles-filtro-catalogo">
+                  <button type="button" class="btn-secundario-simples" id="btn-limpar-busca-pecas" hidden>
+                    ✕ Limpar Pesquisa
+                  </button>
+                  <label class="checkbox-filtro-compativeis">
+                    <input type="checkbox" id="chk-apenas-compativeis" />
+                    <span>Mostrar apenas compatíveis</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Grade de Peças com Fotografias Reais (Sem Visualizador 3D nesta aba) -->
+              <div id="grade-catalogo-pecas" class="grade-catalogo-pecas"></div>
+            </div>
+
+            <!-- Coluna Resumo Lateral e Orçamento -->
+            <aside class="painel-resumo-lateral" aria-label="Resumo da montagem e orçamento">
+              <div class="cabecalho-resumo-lateral">
+                <div>
+                  <h3>Resumo da Montagem</h3>
+                  <span id="resumo-contagem-pecas" style="font-size:0.76rem; color:var(--cor-texto-suave);">0/8 peças</span>
+                </div>
+                <button type="button" class="btn-limpar-montagem" id="btn-limpar-montagem">
+                  Limpar tudo
+                </button>
+              </div>
+
+              <ul id="lista-slots-resumo" class="lista-slots-resumo"></ul>
+
+              <div class="barra-energia-resumo">
+                <span id="resumo-consumo-watts">Consumo est.: ~25W</span>
+                <span id="resumo-fonte-minima">Fonte mín.: 300W</span>
+              </div>
+
+              <div class="box-total-orcamento">
+                <div class="rotulo-total">Preço Total à Vista</div>
+                <div class="preco-total-destaque" id="resumo-preco-total">R$ 0,00</div>
+                <div class="parcelamento-estimado" id="resumo-preco-parcelado">Selecione os componentes ao lado</div>
+              </div>
+
+              <button type="button" class="btn-laranja-principal" id="btn-ver-resultado-montagem" style="width: 100%;">
+                Ver Desempenho e Resultado Final →
+              </button>
+            </aside>
+          </div>
+        </div>
+
+        <!-- Etapa 2: Tela de Resultados Finais e Desempenho -->
+        <div id="painel-resultado-montagem" hidden></div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 3: PCs GAMER (COM O ÚNICO VISUALIZADOR 3D DO SITE)
+           ==================================================================== -->
+      <section id="aba-gamer" class="secao-aba" hidden>
+        <div class="cabecalho-secao">
+          <div>
+            <span class="etiqueta-secao-topo">Configurações para Jogos</span>
+            <h2 class="titulo-secao">PCs Gamer</h2>
+            <p class="subtitulo-secao">
+              Compare computadores organizados nos níveis Entrada, Intermediário e Avançado e inspecione o gabinete gamer no visualizador 3D exclusivo desta seção.
+            </p>
+          </div>
+        </div>
+
+        <!-- Visualizador 3D Exclusivo da Aba PCs Gamer -->
+        <div class="painel-exclusivo-3d-gamer">
+          <div class="cabecalho-3d-gamer">
+            <div>
+              <span class="badge-azul-tecnico">Exclusivo da Aba Gamer • Modelo 3D Interativo</span>
+              <h3 style="font-size:1.15rem; font-weight:800;">Inspeção 3D do Gabinete Gamer</h3>
+              <p id="label-preset-3d" style="font-size:0.84rem; color:var(--cor-texto-secundario);">
+                Arraste para girar o gabinete em 360° e use a rolagem do mouse ou os botões abaixo para aproximar.
+              </p>
+            </div>
+            <div class="grupo-botoes-3d" role="group" aria-label="Alternar nível do gabinete 3D">
+              <button type="button" class="btn-controle-3d" data-preset-3d="gamer-entrada">Ver Nível Entrada</button>
+              <button type="button" class="btn-controle-3d ativo" data-preset-3d="gamer-intermediario">Ver Nível Intermediário</button>
+              <button type="button" class="btn-controle-3d" data-preset-3d="gamer-avancado">Ver Nível Avançado</button>
+            </div>
+          </div>
+
+          <div id="palco-3d-gamer" class="palco-visualizador-3d" aria-label="Visualizador 3D interativo de gabinete gamer">
+            <p id="status-3d-gamer" style="color:#d1d5db; padding:2rem; text-align:center;">
+              Carregando modelo 3D do gabinete gamer...
+            </p>
+          </div>
+
+          <div class="barra-controles-3d">
+            <span style="font-size:0.8rem; color:var(--cor-texto-suave);">
+              Ativo 3D: <code>assets/models/gabinete-gamer.glb</code> • WebGL Interativo
+            </span>
+            <div class="grupo-botoes-3d">
+              <button type="button" class="btn-controle-3d" data-acao-3d="zoom-in">+ Aproximar</button>
+              <button type="button" class="btn-controle-3d" data-acao-3d="zoom-out">− Afastar</button>
+              <button type="button" class="btn-controle-3d" id="btn-3d-spin" data-acao-3d="toggle-spin">Pausar Giro</button>
+              <button type="button" class="btn-controle-3d" data-acao-3d="reset">Resetar Câmera</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cartões de PCs Gamer (Entrada, Intermediário, Avançado) -->
+        <div id="grade-pcs-gamer" class="grade-pcs-prontos"></div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 4: PCs PARA TRABALHO (BÁSICO, INTERMEDIÁRIO E PROFISSIONAL)
+           ==================================================================== -->
+      <section id="aba-trabalho" class="secao-aba" hidden>
+        <div class="cabecalho-secao">
+          <div>
+            <span class="etiqueta-secao-topo">Produtividade &amp; Escritório</span>
+            <h2 class="titulo-secao">PCs para Trabalho</h2>
+            <p class="subtitulo-secao">
+              Computadores pré-montados prontos para uso conforme seu orçamento e necessidade, com indicações claras de finalidade e limitações técnicas reais (incluindo requisitos para AutoCAD).
+            </p>
+          </div>
+        </div>
+
+        <div id="grade-pcs-trabalho" class="grade-pcs-prontos"></div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 5: ARQUITETURA DA COMPUTAÇÃO (CARTÕES E PERGUNTAS INTERATIVAS)
+           ==================================================================== -->
+      <section id="aba-arquitetura" class="secao-aba" hidden>
+        <div class="cabecalho-secao">
+          <div>
+            <span class="etiqueta-secao-topo">Educação Tecnológica</span>
+            <h2 class="titulo-secao">Aprenda Arquitetura da Computação</h2>
+            <p class="subtitulo-secao">
+              Selecione um dos 12 cartões temáticos abaixo para responder a perguntas de múltipla escolha e aprender com as explicações apresentadas a cada questão.
+            </p>
+          </div>
+        </div>
+
+        <!-- Grade de 12 Cartões de Temas -->
+        <div id="grade-temas-arquitetura" class="grade-temas-arquitetura"></div>
+
+        <!-- Painel Interativo de Pergunta / Correção / Pontuação -->
+        <div id="painel-quiz-arquitetura" hidden></div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 6: SOBRE A EQUIPE
+           ==================================================================== -->
+      <section id="aba-equipe" class="secao-aba" hidden>
+        <div class="cabecalho-secao">
+          <div>
+            <span class="etiqueta-secao-topo">Desenvolvedores do Projeto</span>
+            <h2 class="titulo-secao">Sobre a Equipe</h2>
+            <p class="subtitulo-secao">
+              Conheça os integrantes responsáveis pelo desenvolvimento, arquitetura de dados, interface, regras de compatibilidade e testes do sistema.
+            </p>
+          </div>
+        </div>
+
+        <div id="grade-equipe-desenvolvimento" class="grade-equipe"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       RODAPÉ SIMPLES
+       ======================================================================== -->
+  <footer class="rodape-site">
+    <div class="container-limite rodape-conteudo">
+      <div>
+        <strong style="color:#ffffff;">Konoha Hardware</strong> — Montador de PCs, Configurações Gamer/Trabalho e Estudo de Arquitetura da Computação.
+      </div>
+      <div class="rodape-links">
+        <button type="button" data-ir-aba="inicio">Início</button>
+        <button type="button" data-ir-aba="montar">Montar seu PC</button>
+        <button type="button" data-ir-aba="gamer">PCs Gamer</button>
+        <button type="button" data-ir-aba="trabalho">PCs para Trabalho</button>
+        <button type="button" data-ir-aba="arquitetura">Arquitetura da Computação</button>
+        <button type="button" data-ir-aba="equipe">Sobre a Equipe</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL 1: DETALHES DE CONFIGURAÇÃO PRÉ-MONTADA
+       ======================================================================== -->
+  <div id="modal-detalhes-pc" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="titulo-modal-detalhes-pc">
+    <div class="modal-caixa">
+      <div class="modal-cabecalho">
+        <h3 id="titulo-modal-detalhes-pc" style="font-size:1.15rem; font-weight:800;">Detalhes da Configuração</h3>
+        <button type="button" class="btn-fechar-modal" id="btn-fechar-modal-detalhes" aria-label="Fechar janela">✕</button>
+      </div>
+      <div id="corpo-modal-detalhes-pc"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: AUTENTICAÇÃO OFICIAL GOOGLE (CONFIGURAÇÃO DE CLIENT ID REAL)
+       ======================================================================== -->
+  <div id="modal-config-google" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="titulo-modal-auth">
+    <div class="modal-caixa">
+      <div class="modal-cabecalho">
+        <h3 id="titulo-modal-auth" style="font-size:1.15rem; font-weight:800;">Autenticação Oficial Google (OAuth 2.0)</h3>
+        <button type="button" class="btn-fechar-modal" id="btn-fechar-modal-auth" aria-label="Fechar janela">✕</button>
+      </div>
+
+      <div id="msg-status-modal-auth" class="alerta-modal-auth alerta-aviso" hidden></div>
+
+      <p style="font-size:0.88rem; color:var(--cor-texto-secundario); margin-bottom:0.85rem;">
+        Esta aplicação utiliza exclusivamente o fluxo oficial <strong>Google Identity Services</strong> para identificar e sincronizar seu e-mail autenticado (escopos <code>openid email profile</code>). Conforme as diretrizes do projeto, <strong>o sistema não simula logins falsos</strong> sem uma credencial real.
+      </p>
+
+      <form id="form-config-client-id">
+        <label for="input-google-client-id" style="font-size:0.85rem; font-weight:700; display:block;">
+          Informe seu Google OAuth 2.0 Client ID:
+        </label>
+        <input
+          type="text"
+          id="input-google-client-id"
+          class="input-texto-padrao"
+          placeholder="Ex.: 1234567890-abcdefg.apps.googleusercontent.com"
+          required
+        />
+
+        <div style="background-color:var(--cor-cinza-claro); padding:0.75rem; border-radius:6px; font-size:0.8rem; color:var(--cor-texto-secundario); margin-bottom:1rem;">
+          <strong>Como configurar no Google Cloud Console:</strong>
+          <ol style="padding-left:1.2rem; margin-top:0.35rem;">
+            <li>Acesse <code>console.cloud.google.com/apis/credentials</code> e crie um <strong>ID do cliente OAuth (Aplicativo da Web)</strong>.</li>
+            <li>Em <em>Origens JavaScript autorizadas</em>, adicione: <code id="texto-origem-atual">http://localhost:5500</code></li>
+            <li>Cole o Client ID acima (ou defina em <code>js/config-auth.js</code>) e clique no botão abaixo.</li>
+          </ol>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.65rem;">
+          <button type="submit" class="btn-laranja-principal">
+            Salvar Client ID e Autenticar com Google
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts Modulares Separados por Responsabilidade (Compatíveis com HTTP e abertura direta) -->
+  <script defer src="data/pecas.js"></script>
+  <script defer src="data/pcs-prontos.js"></script>
+  <script defer src="data/arquitetura-questoes.js"></script>
+  <script defer src="js/compatibilidade.js"></script>
+  <script defer src="js/desempenho.js"></script>
+  <script defer src="js/visualizador-3d.js"></script>
+  <script defer src="js/quiz-arquitetura.js"></script>
+  <script defer src="js/config-auth.js"></script>
+  <script defer src="js/auth-google.js"></script>
+  <script defer src="js/main.js"></script>
+</body>
+</html>
